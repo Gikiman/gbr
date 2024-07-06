@@ -511,14 +511,15 @@ class StatusPanel(tk.Frame):
 
         maxw = self.__get_maxw() - chw*3
         if f.measure(text + file) > maxw:
-            # Exclude file path parts to fit in starting from 3 entry
+            # Exclude file path parts to fit in starting from 3rd entry
             parts = list(Path(file).parts)
-            for n in range(len(parts)-3):
-                parts.pop(len(parts)-2)
-                t = parts[0] + '\\'.join(parts[1:])
-                if f.measure(text + t) < maxw: break
-            file = parts[0] + '\\'.join(parts[1:-2])
-            file += '\\...\\' + parts[-1]
+            for n in range(len(parts) - 3):
+                parts.pop(len(parts) - 2)
+                t = str(Path(*parts))
+                if f.measure(text + t) < maxw:
+                    break
+            file = str(Path(*parts[:-2]))
+            file += Path('...', parts[-1]).as_posix()
 
         self.__var.set(text + " " + file)
 
@@ -1141,6 +1142,8 @@ class ImageMask(object):
         """Generates default mask"""
         dx = self.mask_width // 2
         dy = self.mask_width // 2
+        print('-'*50)
+        print(self.__panel)
         self.__mask = [
                 dx,
                 dy,

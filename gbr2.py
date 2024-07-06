@@ -871,7 +871,8 @@ class GbrGUI2(tk.Tk):
 
     def __init_window(self):
         # Image panel
-        img = cv2.imread("ui\\def_board.png")
+       
+        img = cv2.imread(os.path.join("ui", "def_board.png"))
         self.imagePanel = ImagePanel(self.internalFrame,
             image = img,
             mode = "fit",
